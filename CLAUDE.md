@@ -128,6 +128,7 @@ This is especially critical for background commands where the working directory 
 | **Utility tools** | redub, addmusic, notebooklm_brand, locate_watermark | Quick transformations on existing videos |
 | **Cloud GPU** | image_edit, upscale, dewatermark, sadtalker, qwen3_tts, music_gen, flux2 | AI processing via RunPod or Modal (`--cloud runpod\|modal`) |
 | **Publishing** | youtube_upload | Upload a finished render to YouTube (use `/publish` for the guided workflow) |
+| **Analysis** | reference_analyze | Measure a reference video's pacing/structure before planning (use `/reference`) |
 
 Utility tools work on any video file without requiring a project structure.
 
@@ -352,6 +353,28 @@ python tools/notebooklm_brand.py \
 
 Trims NotebookLM visuals, keeps full audio, bridges with freeze frame, adds branded outro.
 
+### Reference-Video Analysis
+
+Start from a video you love instead of a blank prompt. `/reference` is the guided workflow
+(measure → keep/change → 2-3 costed concepts → `/video`); the tool does the measuring.
+
+```bash
+python3 tools/reference_analyze.py --input "https://youtube.com/shorts/ID" --json
+python3 tools/reference_analyze.py --input clip.mp4                  # local file (+ clip.srt if present)
+python3 tools/reference_analyze.py --input clip.mp4 --scene-threshold 0.2   # catch softer cuts
+```
+
+Measures shots (ffmpeg scene score), average shot length → pacing class, narration wpm and
+speech coverage, the 3-second hook, beats (narration split at pauses, each with a 150-wpm word
+budget), loudness, and a keyframe contact sheet. Output: `references/<slug>/` (gitignored).
+
+- **Transcript chain:** platform captions → local whisper → ElevenLabs Scribe → none.
+- **Downloads get blocked** (403 / login walls, especially from servers and VPNs) — use
+  `--cookies-from-browser chrome` or download the clip and pass the file.
+- **View the contact sheet** — numbers say how fast, frames say what.
+- **Structure, not content:** never reuse a reference's footage, audio, or script in a render.
+- Re-run it on your own render to compare pacing against the reference.
+
 ### Publishing to YouTube
 
 Upload a finished render to YouTube via the Data API v3. Use the `/publish` command for the
@@ -385,7 +408,7 @@ python3 tools/youtube_upload.py --video out/video.mp4 --title "Test" --dry-run -
 
 ## Video Production Workflow
 
-1. **Create/resume project** - Run `/video`, choose template and brand (or resume existing)
+1. **Create/resume project** - Run `/video`, choose template and brand (or resume existing). Starting from a video you like? Run `/reference` first.
 2. **Review script** - Edit `VOICEOVER-SCRIPT.md` to plan content
 3. **Gather assets** - Record demos with `/record-demo` or add external videos
 4. **Scene review** - Run `/scene-review` to verify visuals in Remotion Studio
