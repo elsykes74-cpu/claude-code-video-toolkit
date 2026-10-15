@@ -554,6 +554,10 @@ def contact_sheet(shots: list[dict], root: Path, out: Path, vertical: bool) -> P
 # ─── report ─────────────────────────────────────────────────
 
 def suggest_template(fmt: dict) -> str:
+    # Every bundled template targets short pieces; past ~3 min nothing fits
+    # and pointing at one would mislead the plan.
+    if fmt["duration"] > 180:
+        return "none (long-form: custom Remotion composition or moviepy build.py)"
     if fmt["aspect"] == "vertical":
         return "concept-explainer-short"
     return "product-demo"

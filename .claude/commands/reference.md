@@ -95,7 +95,7 @@ Risk:        <what might not land — e.g. LTX-2 can't render legible text; fast
 
 **Template fit:** vertical → `concept-explainer-short` (or moviepy for sub-30s ad spots);
 landscape marketing → `product-demo`; landscape team update → `sprint-review`. The tool's
-`suggested_template` is only an aspect-ratio hint.
+`suggested_template` is only an aspect/length hint; over ~3 min it reports no match.
 
 **Costing:** count assets from the beat/shot plan × the per-unit estimates in the README's
 Cloud GPU table and CLAUDE.md (Ideogram 4 ~$0.03-0.09/img; LTX-2 ~$0.23/clip; Qwen3-TTS
