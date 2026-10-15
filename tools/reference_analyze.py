@@ -599,8 +599,11 @@ def write_markdown(a: dict, path: Path) -> None:
         L += [f"_Transcript note: {n['note']}_", ""]
 
     L += ["## Hook (first 3s)", "",
-          f"- Cuts: **{h['cuts']}** · words spoken: **{h['words']}**",
-          f"- Opening line: {('“' + h['opening_line'] + '”') if h['opening_line'] else '_(no speech in first 3s)_'}",
+          f"- Cuts: **{h['cuts']}** · words spoken: **{h['words'] if h['words'] is not None else 'unknown'}**",
+          f"- Opening line: " + (
+              f"“{h['opening_line']}”" if h["opening_line"]
+              else "_(no speech in first 3s)_" if h["words"] is not None
+              else "_(unknown — no timed transcript; not evidence of silence)_"),
           ""]
 
     if a["beats"]:
@@ -696,7 +699,8 @@ def analyze(args) -> dict:
     hook = {
         "seconds": HOOK_SECONDS,
         "cuts": sum(1 for s in shots[1:] if s["start"] < HOOK_SECONDS),
-        "words": len(hook_words),
+        # None (not 0) without a timed transcript: absence of data ≠ silence.
+        "words": len(hook_words) if timed else None,
         "opening_line": beats[0]["text"] if beats and beats[0]["start"] < HOOK_SECONDS else
                         (" ".join(w["text"] for w in hook_words) or None),
     }
@@ -766,7 +770,7 @@ def main() -> None:
     p.add_argument("--keyframe-width", type=int, default=480, help="Keyframe width in px (default 480)")
     p.add_argument("--cookies-from-browser", metavar="BROWSER",
                    help="Pass browser cookies to yt-dlp (chrome, firefox, safari…) for login/bot walls")
-    p.add_argument("--max-minutes", type=float, default=20, help="Refuse URL downloads longer than this (default 20)")
+    p.add_argument("--max-minutes", type=float, default=30, help="Refuse URL downloads longer than this (default 30)")
     p.add_argument("--delete-source", action="store_true", help="Delete the downloaded video after analysis")
     p.add_argument("--json", action="store_true", help="Print the analysis JSON (minus shots/transcript) to stdout")
     args = p.parse_args()

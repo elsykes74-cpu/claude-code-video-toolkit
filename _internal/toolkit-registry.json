@@ -721,7 +721,7 @@
         ],
         "sceneThreshold": "--scene-threshold 0-1 (default 0.3; lower = more cuts)",
         "beats": "--beat-gap (pause that splits beats, 0.6s) / --beat-max (12s)",
-        "download": "--cookies-from-browser BROWSER, --max-minutes (20), --delete-source",
+        "download": "--cookies-from-browser BROWSER, --max-minutes (30), --delete-source",
         "jsonOut": true
       },
       "envVars": [
