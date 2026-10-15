@@ -49,6 +49,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 TOOLKIT_ROOT = Path(__file__).resolve().parent.parent
+
+# Windows consoles/pipes default to cp1252, which can't print the ✓/→ status
+# glyphs (or non-Latin video titles) and would crash with UnicodeEncodeError.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 try:
@@ -90,7 +98,7 @@ def require_bin(name: str, hint: str) -> str:
 
 
 def run(cmd: list[str], check: bool = True) -> subprocess.CompletedProcess:
-    proc = subprocess.run(cmd, capture_output=True, text=True, errors="replace")
+    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
     if check and proc.returncode != 0:
         tail = "\n".join(proc.stderr.strip().splitlines()[-8:])
         raise RuntimeError(f"command failed ({cmd[0]}):\n{tail}")
