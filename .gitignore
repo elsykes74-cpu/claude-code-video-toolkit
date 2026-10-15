@@ -87,6 +87,9 @@ projects/
 # Keep directory structure
 !projects/.gitkeep
 
+# Reference-video analyses (tools/reference_analyze.py) — downloaded third-party media
+references/
+
 # Examples directory IS tracked (curated showcase projects)
 !examples/
 

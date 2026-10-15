@@ -91,6 +91,7 @@ Claude Code has deep knowledge in:
 |---------|-------------|
 | `/setup` | First-time setup — cloud GPU, file transfer, voice, prerequisites |
 | `/video` | Video projects — list, resume, or create new |
+| `/reference` | Start from a video you love — analyze a URL/clip, get costed concepts, hand off to `/video` |
 | `/scene-review` | Scene-by-scene review in Remotion Studio |
 | `/design` | Focused design refinement session for a scene |
 | `/brand` | Brand profiles — list, edit, or create new |
@@ -279,6 +280,7 @@ python tools/youtube_upload.py --video out/video.mp4 --title "My video" --privac
 | **Utility** | redub, addmusic, notebooklm_brand, locate_watermark | Quick transformations, no project needed |
 | **Cloud GPU** | image_edit, upscale, dewatermark, sadtalker, qwen3_tts, flux2, music_gen, ltx2 | AI processing via Modal or RunPod |
 | **Publishing** | youtube_upload | Upload a finished render to YouTube (or use `/publish`) |
+| **Analysis** | reference_analyze | Measure a reference video's pacing, hook, and beats (or use `/reference`) |
 
 ### Cloud GPU (Modal + RunPod)
 

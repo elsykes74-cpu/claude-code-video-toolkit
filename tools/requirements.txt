@@ -25,6 +25,10 @@ matplotlib>=3.7
 # google-auth-oauthlib>=1.2.0
 # google-auth-httplib2>=0.2.0
 
+# Optional — reference-video analysis from URLs (tools/reference_analyze.py,
+# /reference). Local files work without it. Uncomment to enable:
+# yt-dlp
+
 # Optional — burned karaoke captions in templates/concept-explainer-short
 # (word-level timing; heavy install, pulls in torch). Uncomment to enable:
 # openai-whisper

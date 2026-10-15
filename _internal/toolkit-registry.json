@@ -193,6 +193,13 @@
       "status": "beta",
       "created": "2026-06-09",
       "updated": "2026-06-09"
+    },
+    "reference": {
+      "path": ".claude/commands/reference.md",
+      "description": "Start from a video you love - analyze a reference URL/clip, get keep/change notes and 2-3 costed concepts, then hand off to /video",
+      "status": "beta",
+      "created": "2026-10-15",
+      "updated": "2026-10-15"
     }
   },
   "tools": {
@@ -695,6 +702,35 @@
       "documentation": "docs/youtube-upload.md",
       "created": "2026-06-09",
       "updated": "2026-06-09"
+    },
+    "reference_analyze": {
+      "path": "tools/reference_analyze.py",
+      "description": "Measure a reference video (URL via yt-dlp or local file): shot boundaries, average shot length, pacing class, narration wpm, hook (first 3s), beats with word budgets, loudness, keyframes + contact sheet",
+      "usage": "python3 tools/reference_analyze.py --input \"https://youtube.com/shorts/ID\" --json",
+      "status": "beta",
+      "category": "analysis",
+      "requires": "ffmpeg/ffprobe; yt-dlp for URLs; optional openai-whisper or ELEVENLABS_API_KEY for transcripts without captions; Pillow for the contact sheet",
+      "options": {
+        "transcript": "--transcript file.vtt|.srt|.txt (skip ASR); a same-name .srt/.vtt next to a local file is auto-used",
+        "asr": [
+          "auto",
+          "captions",
+          "whisper",
+          "scribe",
+          "none"
+        ],
+        "sceneThreshold": "--scene-threshold 0-1 (default 0.3; lower = more cuts)",
+        "beats": "--beat-gap (pause that splits beats, 0.6s) / --beat-max (12s)",
+        "download": "--cookies-from-browser BROWSER, --max-minutes (20), --delete-source",
+        "jsonOut": true
+      },
+      "envVars": [
+        "ELEVENLABS_API_KEY"
+      ],
+      "outputs": "references/<slug>/ (gitignored): analysis.json, REFERENCE.md, contact_sheet.jpg, keyframes/, transcript.txt",
+      "note": "Measures structure only. Downloaded media is for analysis - never reuse a reference's footage, audio, or script in a render. Platforms may block downloads (403/login walls); pass a local file instead.",
+      "created": "2026-10-15",
+      "updated": "2026-10-15"
     }
   },
   "optionalComponents": {
